@@ -4,6 +4,7 @@ const router = express.Router();
 const SHA256 = require("crypto-js/sha256");
 const encBase64 = require("crypto-js/enc-base64");
 const uid2 = require("uid2");
+const cloudinary = require("cloudinary").v2;
 
 const User = require("../models/User");
 
@@ -34,8 +35,8 @@ router.post("/user/signup", async (req, res) => {
 
           if (picture) {
             user.account.avatar = picture;
-            await user.save();
           }
+          await user.save();
         }
         res.json({ message: "User successfully registered", user: user });
       } else {

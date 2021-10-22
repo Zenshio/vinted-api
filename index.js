@@ -1,6 +1,7 @@
 require("dotenv").config();
-const cors = require("cors");
+
 const express = require("express");
+const cors = require("cors");
 const formidable = require("express-formidable");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
@@ -13,8 +14,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-app.use(cors());
 const app = express();
+app.use(cors());
 app.use(formidable());
 //Utilisation du middleware morgan
 app.use(morgan("dev"));
