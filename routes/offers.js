@@ -1,14 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const cloudinary = require("cloudinary").v2;
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
 const Offer = require("../models/Offer");
 
 const isAuthenticated = require("../middlewares/isAuthenticated");
@@ -207,7 +199,10 @@ router.get("/offers", async (req, res) => {
 
 router.get("/offer/:id", async (req, res) => {
   try {
-    const offer = await Offer.findById(req.params.id);
+    const offer = await Offer.findById(req.params.id).populate({
+      path: "owner",
+      select: ["account", "email"],
+    });
     return res.json(offer);
   } catch (error) {
     return res.status(400).json({ error: error.message });
