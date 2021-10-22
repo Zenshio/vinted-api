@@ -28,6 +28,10 @@ app.use(userRoutes);
 const offerRoutes = require("./routes/offers");
 app.use(offerRoutes);
 
+app.get("/", (req, res) => {
+  res.json("Welcome here ;)");
+});
+
 app.all("*", (req, res) => {
   res.json("All Routes");
 });
