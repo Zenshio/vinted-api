@@ -164,7 +164,7 @@ router.delete("/offer/cancel", isAuthenticated, async (req, res) => {
 router.get("/offers", async (req, res) => {
   const filter = {};
   const sort = {};
-  const resultsPerPage = Number(req.query.results) ?? 5;
+  const resultsPerPage = req.query.results ? Number(req.query.results) : 5;
 
   if (req.query.title) {
     filter.product_name = new RegExp(req.query.title, "i");

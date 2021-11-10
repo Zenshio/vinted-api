@@ -29,11 +29,11 @@ const offerRoutes = require("./routes/offers");
 app.use(offerRoutes);
 
 app.get("/", (req, res) => {
-  res.json("Welcome here ;)");
+  return res.json("Welcome here ;)");
 });
 
 app.all("*", (req, res) => {
-  res.json("All Routes");
+  return res.json("All Routes");
 });
 
 app.listen(process.env.PORT, () => {
