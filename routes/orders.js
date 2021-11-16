@@ -31,7 +31,7 @@ router.post("/order/payment", isAuthenticated, async (req, res) => {
     order.save();
     res.json(order);
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ message: error.message });
   }
 });
 

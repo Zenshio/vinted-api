@@ -13,7 +13,7 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
   if (!req.fields.title || req.fields.title.length > 50) {
     return res
       .status(400)
-      .json({ error: "Title length must be between 0 and 50 characters." });
+      .json({ message: "Title length must be between 0 and 50 characters." });
   } else if (!req.fields.description || req.fields.description.length > 500) {
     return res.status(400).json({
       error: "Description length must be between 0 and 500 characters.",
@@ -62,7 +62,7 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
 
       return res.json(offer);
     } catch (error) {
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({ message: error.message });
     }
   }
 });
@@ -73,7 +73,7 @@ router.put("/offer/edit", isAuthenticated, async (req, res) => {
   if (req.fields.title && req.fields.title.length > 50) {
     return res
       .status(400)
-      .json({ error: "Title length must be between 0 and 50 characters." });
+      .json({ message: "Title length must be between 0 and 50 characters." });
   } else if (req.fields.description && req.fields.description.length > 500) {
     return res.status(400).json({
       error: "Description length must be between 0 and 500 characters.",
@@ -87,7 +87,7 @@ router.put("/offer/edit", isAuthenticated, async (req, res) => {
       const offer = await Offer.findById(req.fields.id);
 
       if (!offer) {
-        return res.status(400).json({ error: "Bad request." });
+        return res.status(400).json({ message: "Bad request." });
       } else {
         offer.product_name = req.fields.title;
         offer.product_description = req.fields.description;
@@ -129,7 +129,7 @@ router.put("/offer/edit", isAuthenticated, async (req, res) => {
       }
       return res.json(offer);
     } catch (error) {
-      return res.status(400).json({ error: error.message });
+      return res.status(400).json({ message: error.message });
     }
   }
 });
@@ -147,10 +147,10 @@ router.delete("/offer/cancel", isAuthenticated, async (req, res) => {
 
       // Une fois le dossier vide, on peut le supprimer !
       await cloudinary.api.delete_folder(`vinted/offers/${req.fields.id}`);
-      return res.json({ error: "Offer cancelled." });
+      return res.json({ message: "Offer cancelled." });
     }
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ message: error.message });
   }
 });
 
@@ -188,7 +188,7 @@ router.get("/offers", async (req, res) => {
 
     return res.json({ count: count, offers: offers });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ message: error.message });
   }
 });
 
@@ -200,7 +200,7 @@ router.get("/offer/:id", async (req, res) => {
     });
     return res.json(offer);
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ message: error.message });
   }
 });
 
