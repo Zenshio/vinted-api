@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const stripe = require("stripe")("sk_test_votreCléPrivée");
 
 const Order = require("../models/Order");
 
@@ -11,6 +12,7 @@ router.post("/order/payment", isAuthenticated, async (req, res) => {
       amount: req.fields.amount,
       currency: req.fields.currency,
       description: req.fields.product_name,
+      product_name: req.fields.product_name,
       date: new Date(),
     };
     // Réception du token créer via l'API Stripe depuis le Frontend
