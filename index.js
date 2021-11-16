@@ -27,6 +27,8 @@ const userRoutes = require("./routes/users");
 app.use(userRoutes);
 const offerRoutes = require("./routes/offers");
 app.use(offerRoutes);
+const orderRoutes = require("./routes/orders");
+app.use(orderRoutes);
 
 app.get("/", (req, res) => {
   return res.json("Welcome here ;)");

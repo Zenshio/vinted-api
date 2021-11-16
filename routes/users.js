@@ -8,6 +8,8 @@ const cloudinary = require("cloudinary").v2;
 
 const User = require("../models/User");
 
+const isAuthenticated = require("../middlewares/isAuthenticated");
+
 router.post("/user/signup", async (req, res) => {
   try {
     if (req.fields.username) {
@@ -72,6 +74,23 @@ router.post("/user/login", async (req, res) => {
       });
     } else {
       return res.status(401).json({ error: "Wrong email or password." });
+    }
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+});
+
+router.post("/user", isAuthenticated, async (req, res) => {
+  try {
+    if (req.user) {
+      return res.json({
+        _id: req.user._id,
+        email: req.user.email,
+        account: req.user.account,
+        token: req.user.token,
+      });
+    } else {
+      return res.status(400).json({ error: "Bad request." });
     }
   } catch (error) {
     return res.status(400).json({ error: error.message });
