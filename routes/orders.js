@@ -17,14 +17,16 @@ router.post("/order/payment", isAuthenticated, async (req, res) => {
     const stripeToken = req.fields.stripeToken;
     // Créer la transaction
     const response = await stripe.charges.create(
-      Object.assign({ ...data }, { source: stripeToken })
+      Object.assign(
+        { ...data },
+        { currency: data.currency * 100, source: stripeToken }
+      )
     );
-    console.log(response.status);
 
-    // TODO
     // Sauvegarder la transaction dans une BDD MongoDB
     const order = new Order(data);
     order.product_name = req.fields.product_name;
+    order.owner = req.user;
 
     order.save();
     res.json(order);
