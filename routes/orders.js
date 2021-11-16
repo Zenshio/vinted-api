@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const stripe = require("stripe")("sk_test_votreCléPrivée");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const Order = require("../models/Order");
 
