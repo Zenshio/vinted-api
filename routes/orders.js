@@ -19,7 +19,7 @@ router.post("/order/payment", isAuthenticated, async (req, res) => {
     const response = await stripe.charges.create(
       Object.assign(
         { ...data },
-        { amount: data.amount * 100, source: stripeToken }
+        { amount: Math.round(data.amount * 100), source: stripeToken }
       )
     );
 
