@@ -38,8 +38,9 @@ router.post("/user/signup", async (req, res) => {
           if (picture) {
             user.account.avatar = picture;
           }
-          await user.save();
         }
+
+        await user.save();
         return res.json({
           _id: user._id,
           email: user.email,

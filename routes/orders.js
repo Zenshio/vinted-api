@@ -28,7 +28,7 @@ router.post("/order/payment", isAuthenticated, async (req, res) => {
     order.product_name = req.fields.product_name;
     order.owner = req.user;
 
-    order.save();
+    await order.save();
     res.json(order);
   } catch (error) {
     return res.status(400).json({ message: error.message });
