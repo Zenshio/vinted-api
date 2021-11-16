@@ -45,13 +45,13 @@ router.post("/user/signup", async (req, res) => {
           token: user.token,
         });
       } else {
-        return res.status(400).json({ message: "Email already in use." });
+        return res.status(400).json({ error: "Email already in use." });
       }
     } else {
-      return res.status(400).json({ message: "Username required." });
+      return res.status(400).json({ error: "Username required." });
     }
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(400).json({ error: error.message });
   }
 });
 
@@ -71,10 +71,10 @@ router.post("/user/login", async (req, res) => {
         token: user.token,
       });
     } else {
-      return res.status(401).json({ message: "Wrong email or password." });
+      return res.status(401).json({ error: "Wrong email or password." });
     }
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(400).json({ error: error.message });
   }
 });
 

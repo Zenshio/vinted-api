@@ -9,28 +9,25 @@ const isAuthenticated = require("../middlewares/isAuthenticated");
 
 // PUBLIER UNE OFFRE
 router.post("/offer/publish", isAuthenticated, async (req, res) => {
+  const price = parseFloat(req.fields?.price.replace(/,/, "."));
   if (!req.fields.title || req.fields.title.length > 50) {
     return res
       .status(400)
-      .json({ message: "Title length must be between 0 and 50 characters." });
+      .json({ error: "Title length must be between 0 and 50 characters." });
   } else if (!req.fields.description || req.fields.description.length > 500) {
     return res.status(400).json({
-      message: "Description length must be between 0 and 500 characters.",
+      error: "Description length must be between 0 and 500 characters.",
     });
-  } else if (
-    isNaN(req.fields.price) ||
-    req.fields.price > 100000 ||
-    req.fields.price < 0
-  ) {
+  } else if (isNaN(price) || price > 100000 || price < 0) {
     return res.status(400).json({
-      message: "Price must be between 0 and 100000.",
+      error: "Price must be between 0 and 100000.",
     });
   } else {
     try {
       const offer = new Offer({
         product_name: req.fields.title,
         product_description: req.fields.description,
-        product_price: req.fields.price,
+        product_price: price,
         product_details: [
           {
             MARQUE: req.fields.brand,
@@ -72,33 +69,29 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
 
 // EDITER UNE OFFRE
 router.put("/offer/edit", isAuthenticated, async (req, res) => {
+  const price = parseFloat(req.fields?.price.replace(/,/, "."));
   if (req.fields.title && req.fields.title.length > 50) {
     return res
       .status(400)
-      .json({ message: "Title length must be between 0 and 50 characters." });
+      .json({ error: "Title length must be between 0 and 50 characters." });
   } else if (req.fields.description && req.fields.description.length > 500) {
     return res.status(400).json({
-      message: "Description length must be between 0 and 500 characters.",
+      error: "Description length must be between 0 and 500 characters.",
     });
-  } else if (
-    req.fields.price &&
-    (isNaN(req.fields.price) ||
-      req.fields.price > 100000 ||
-      req.fields.price < 0)
-  ) {
+  } else if (price && (isNaN(price) || price > 100000 || price < 0)) {
     return res.status(400).json({
-      message: "Price must be between 0 and 100000.",
+      error: "Price must be between 0 and 100000.",
     });
   } else {
     try {
       const offer = await Offer.findById(req.fields.id);
 
       if (!offer) {
-        return res.status(400).json({ message: "Bad request." });
+        return res.status(400).json({ error: "Bad request." });
       } else {
         offer.product_name = req.fields.title;
         offer.product_description = req.fields.description;
-        offer.product_price = req.fields.price;
+        offer.product_price = price;
         offer.product_details = [
           {
             MARQUE: req.fields.brand,
@@ -154,7 +147,7 @@ router.delete("/offer/cancel", isAuthenticated, async (req, res) => {
 
       // Une fois le dossier vide, on peut le supprimer !
       await cloudinary.api.delete_folder(`vinted/offers/${req.fields.id}`);
-      return res.json({ message: "Offer cancelled." });
+      return res.json({ error: "Offer cancelled." });
     }
   } catch (error) {
     return res.status(400).json({ error: error.message });
