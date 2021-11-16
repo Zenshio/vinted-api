@@ -4,7 +4,7 @@ const Order = mongoose.model("Order", {
   amount: Number,
   currency: String,
   product_name: String,
-  date: Date,
+  date: { type: Date, default: Date.now() },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

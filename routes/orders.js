@@ -12,8 +12,6 @@ router.post("/order/payment", isAuthenticated, async (req, res) => {
       amount: req.fields.amount,
       currency: req.fields.currency,
       description: req.fields.product_name,
-      product_name: req.fields.product_name,
-      date: new Date(),
     };
     // Réception du token créer via l'API Stripe depuis le Frontend
     const stripeToken = req.fields.stripeToken;
@@ -26,6 +24,8 @@ router.post("/order/payment", isAuthenticated, async (req, res) => {
     // TODO
     // Sauvegarder la transaction dans une BDD MongoDB
     const order = new Order(data);
+    order.product_name = req.fields.product_name;
+
     offer.save();
     res.json(order);
   } catch (error) {
